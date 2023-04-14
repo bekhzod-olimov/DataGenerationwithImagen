@@ -14,3 +14,5 @@ This repository contains simple data generation examples using [Imagen](https://
 **Outdoor banner generation**
 ![image](https://user-images.githubusercontent.com/50166164/231912260-87c37e8a-3565-4379-975d-dc52a612a43f.png)
 ![image](https://user-images.githubusercontent.com/50166164/231912272-181add39-e1f6-45a5-adfb-742d6a71bcc4.png)
+![image](https://user-images.githubusercontent.com/50166164/231912337-01b15981-8e07-4ae8-b56c-bf78e5dcec07.png)
+![image](https://user-images.githubusercontent.com/50166164/231912359-a1337b6e-6c9c-4a7f-ba31-eb57dc2b8815.png)
