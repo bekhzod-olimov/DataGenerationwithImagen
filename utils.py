@@ -1,13 +1,14 @@
+# Import libraries
+import torch, numpy as np, PIL.Image as Image
+import torchvision.transforms.functional as F
 from typing import List
 from transformers import T5Tokenizer, T5EncoderModel, T5Config
 from einops import rearrange
-import torch, numpy as np, PIL.Image as Image
-import torchvision.transforms.functional as F
 
-DEFAULT_T5_NAME = "google/t5-v1_1-base"
-T5_CONFIGS = {}
-MAX_LENGTH = 256
+# Set default options
+DEFAULT_T5_NAME, T5_CONFIGS, MAX_LENGTH, = "google/t5-v1_1-base", {}, 256
 
+# Function to convert tensor to numpy array
 def tn_to_np(im): return (im * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8)
 
 def save_ims(gen_ims, save_path):
