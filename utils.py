@@ -32,8 +32,8 @@ def save_ims(gen_ims, save_path):
         # Save the image
         Image.fromarray(im).save(f"{save_path}/gen_im_{idx}.jpg")
 
+# Function to check existence of a file
 def exists(val): return val is not None
-
 
 class T5LayerNorm(torch.nn.Module):
     def __init__(self, hidden_size, eps=1e-6):
