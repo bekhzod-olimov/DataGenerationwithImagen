@@ -13,8 +13,23 @@ def tn_to_np(im): return (im * 255).detach().cpu().permute(1,2,0).numpy().astype
 
 def save_ims(gen_ims, save_path):
     
+    """
+    
+    This function gets several parameters and saves images to the given path.
+    
+    Parameters:
+    
+        gen_ims    - generated images, list -> tensor;
+        save_path  - a path to directory to save images.
+        
+    """
+    
+    # Go through generated images list
     for idx, gen_im in enumerate(gen_ims):
+        
+        # Convert tensor to numpy array
         im = tn_to_np(gen_im[0])
+        # Save the image
         Image.fromarray(im).save(f"{save_path}/gen_im_{idx}.jpg")
 
 def exists(val): return val is not None
