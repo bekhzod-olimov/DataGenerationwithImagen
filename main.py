@@ -1,3 +1,4 @@
+# Import libraries
 from imagen_pytorch import ImagenTrainer
 from model import get_imagen
 import argparse, torch
@@ -7,23 +8,39 @@ from train import train
 
 def run(args):
     
+    """
+    
+    This functions gets arguments and runs the script.
+    
+    Parameter:
+    
+        args - parsed arguments.
+        
+    """
+    
+    # Initialize sample text based on dataset type
     text = "123나0456" if args.data == "lp" else "학교"
     print("Extracting data...\n")
+    
+    # Get dataset
     ds = CustomDataset(dataset = args.data, t5_encode_text = t5_encode_text, text_embed_dim = args.text_embed_dim, image_size = args.im_size)
     print("Data extraction is done!\n")
     
+    # Initialize imagen and trainer 
     print("Constructing model and trainer...\n")
     imagen = get_imagen(args.text_embed_dim, args.im_size)
     trainer = ImagenTrainer(imagen = imagen, split_valid_from_train = True).to(args.device)
-    
     print("Trainer is ready for train!\n")
     
+    # Add datasets to the trainer
     trainer.add_train_dataset(ds, batch_size = args.batch_size)
     
+    # Pretrained checkpoint
     if args.pretrained is not None:
         trainer.load(args.pretrained)
         print(f"Pretrained model from {args.pretrained} is successfully loaded!")
     
+    # Start training
     train(trainer, t5_encode_text, args.batch_size, args.iterations, device = args.device, result_save_path = args.save_results_path, model_save_path = args.save_model_path, eval_freq = args.eval_freq, generate_freq = args.generate_freq, save_freq = args.save_freq, text_embed_dim = args.text_embed_dim, save_name = args.data, text = text)
     
 if __name__ == "__main__":
@@ -49,4 +66,4 @@ if __name__ == "__main__":
     args = parser.parse_args() 
     
     # Run the code
-    run(args) 
+    run(args)
