@@ -72,14 +72,18 @@ class T5LayerNorm(torch.nn.Module):
         variance = hidden_states.to(torch.float32).pow(2).mean(-1, keepdim = True)
         hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
 
-        # convert into half-precision if necessary
-        if self.weight.dtype in [torch.float16, torch.bfloat16]:
-            hidden_states = hidden_states.to(self.weight.dtype)
-
-        return self.weight * hidden_states
-
+        # Half-precision conversion
+        if self.weight.dtype in [torch.float16, torch.bfloat16]: hidden_states = hidden_states.to(self.weight.dtype)
+        
+        # Multiply weights with hidden states
+        out = self.weight * hidden_states
+        
+        return out
 
 class SquarePad:
+    
+    
+    
     def __call__(self, image):
         w, h = image.size
         max_wh = np.max([w, h])
