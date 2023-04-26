@@ -59,7 +59,7 @@ class T5LayerNorm(torch.nn.Module):
         
         This function gets hidden states and passes them through T5LayerNorm Class.
         
-        Parameters:
+        Parameter:
         
             hidden_states    - hidden state volumes, tensor.
             
@@ -115,6 +115,22 @@ class SquarePad:
       return FF.pad(image, padding, 255, 'constant')
 
 def insert_zeros(x, all_j):
+    
+    """
+    
+    This function gets input tensor and insert zeros to the pre-defined dimensions.
+    
+    Parameters:
+    
+        x       -  input tensor volume, tensor;
+        all_j   -  number of dimensions to insert zeros, int.
+        
+    Output:
+    
+        
+    
+    """
+    
     zeros_ = torch.zeros_like(x[:1])
     pieces = []
     i      = 0
@@ -123,8 +139,7 @@ def insert_zeros(x, all_j):
                        zeros_])
         i = j
 
-    return torch.cat(pieces[:-1],
-                      dim=0     )
+    return torch.cat(pieces[:-1], dim = 0)
 
 def default(val, d):
     if exists(val):
