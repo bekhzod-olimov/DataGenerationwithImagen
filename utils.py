@@ -81,19 +81,38 @@ class T5LayerNorm(torch.nn.Module):
         return out
 
 class SquarePad:
-    
-    
-    
-    def __call__(self, image):
-        w, h = image.size
-        max_wh = np.max([w, h])
-        hp = int((max_wh - w)/2)
-        hp_rem = (max_wh - w)%2
-        vp = int((max_wh - h)/2)
-        vp_rem = (max_wh - h)%2
-        padding = (hp, vp, hp+hp_rem, vp+vp_rem)
-        return F.pad(image, padding, 255, 'constant')
+  
+  """
+  
+  This class gets an image and adds padding to make the image square.
+  
+  Parameter:
+  
+       image - an input image, array;
+       
+  Output:
+  
+       image - a square padded output image, array;
+  
+  """
 
+  def __call__(self, image):
+    
+      # Get width and height of the image
+      w, h = image.size
+      
+      # Get max values of the width and height
+      max_wh = np.max([w, h])
+      
+      # Create padding
+      hp = int((max_wh - w)/2)
+      hp_rem = (max_wh - w)%2
+      vp = int((max_wh - h)/2)
+      vp_rem = (max_wh - h)%2
+      padding = (hp, vp, hp+hp_rem, vp+vp_rem)
+      
+      # Apply padding and return the padded image
+      return FF.pad(image, padding, 255, 'constant')
 
 def insert_zeros(x, all_j):
     zeros_ = torch.zeros_like(x[:1])
