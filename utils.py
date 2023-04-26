@@ -36,13 +36,22 @@ def save_ims(gen_ims, save_path):
 def exists(val): return val is not None
 
 class T5LayerNorm(torch.nn.Module):
+    
+    """
+        
+    This class constructs a layernorm module in the T5 style without bias and no subtraction of mean.
+    
+    Parameters:
+    
+        hidden_size      - number of features in a hidden layer, int;
+        eps              - epsilon value for variance, float.
+        
+        
+        
+    """
+    
     def __init__(self, hidden_size, eps = 1e-6):
         
-        """
-        
-        This class constructs a layernorm module in the T5 style without bias and no subtraction of mean.
-        
-        """
         super().__init__()
         self.weight = torch.nn.Parameter(torch.ones(hidden_size))
         self.variance_epsilon = eps
