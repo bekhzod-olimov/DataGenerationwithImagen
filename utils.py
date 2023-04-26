@@ -46,24 +46,30 @@ class T5LayerNorm(torch.nn.Module):
         hidden_size      - number of features in a hidden layer, int;
         eps              - epsilon value for variance, float.
         
-        
-        
     """
     
     def __init__(self, hidden_size, eps = 1e-6):
         
         super().__init__()
-        self.weight = torch.nn.Parameter(torch.ones(hidden_size))
-        self.variance_epsilon = eps
+        self.weight, self.variance_epsilon = torch.nn.Parameter(torch.ones(hidden_size)), eps
 
     def forward(self, hidden_states):
 
-        # T5 uses a layer_norm which only scales and doesn't shift, which is also known as Root Mean
-        # Square Layer Normalization https://arxiv.org/abs/1910.07467 thus varience is calculated
-        # w/o mean and there is no bias. Additionally we want to make sure that the accumulation for
-        # half-precision inputs is done in fp32
+        """
+        
+        This function gets hidden states and passes them through T5LayerNorm Class.
+        
+        Parameters:
+        
+            hidden_states    - hidden state volumes, tensor.
+            
+        Output:
+        
+            out              - output from the class after variance is applied, tensor.
+        
+        """
 
-        variance = hidden_states.to(torch.float32).pow(2).mean(-1, keepdim=True)
+        variance = hidden_states.to(torch.float32).pow(2).mean(-1, keepdim = True)
         hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
 
         # convert into half-precision if necessary
