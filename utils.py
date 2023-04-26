@@ -127,18 +127,21 @@ def insert_zeros(x, all_j):
         
     Output:
     
-        
+        out    - output tensor volume with zeros inserted, tensor.
     
     """
     
+    # Create a tensor with zeros
     zeros_ = torch.zeros_like(x[:1])
     pieces = []
     i      = 0
+    
+    # Insert zeros
     for j in all_j + [len(x)]:
-        pieces.extend([x[i:j],
-                       zeros_])
+        pieces.extend([x[i:j], zeros_])
         i = j
 
+    # Concatenate and return
     return torch.cat(pieces[:-1], dim = 0)
 
 def default(val, d):
