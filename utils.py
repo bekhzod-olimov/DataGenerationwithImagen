@@ -215,9 +215,23 @@ def t5_tokenize(texts: List[str], name = DEFAULT_T5_NAME):
     # Return input ids and attention mask
     return encoded.input_ids.to(device), encoded.attention_mask.to(device)
 
-def get_tokenizer(name):
-    tokenizer = T5Tokenizer.from_pretrained(name, model_max_length=MAX_LENGTH)
-    return tokenizer
+def get_tokenizer(name): 
+    
+    """
+    
+    This function gets a name parameter and returns a tokenizer.
+    
+    Parameter:
+    
+        name       - name of the model and tokenizer, str;
+        
+    Output:
+    
+        tokenizer  - a tokenizer to tokenize inputs;
+    
+    """
+    
+    return T5Tokenizer.from_pretrained(name, model_max_length = MAX_LENGTH)
 
 def t5_encode_tokenized_text(
     token_ids, device, text_embed_dim,
