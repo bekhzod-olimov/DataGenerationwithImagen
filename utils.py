@@ -192,17 +192,18 @@ def get_model(name):
     return T5EncoderModel.from_pretrained(name)
 
 
-def t5_tokenize(
-    texts: List[str],
-    name = DEFAULT_T5_NAME
-):
+def t5_tokenize(texts: List[str], name = DEFAULT_T5_NAME):
+    
+    # Get model and tokenizer
     t5, tokenizer = get_model_and_tokenizer(name)
 
-    if torch.cuda.is_available():
-        t5 = t5.cuda()
-
+    # Switch to gpu
+    if torch.cuda.is_available(): t5 = t5.cuda()
+    
+    # Get gpu name
     device = next(t5.parameters()).device
 
+    # Get encoded inputs
     encoded = tokenizer.batch_encode_plus(
         texts,
         return_tensors = "pt",
@@ -211,9 +212,8 @@ def t5_tokenize(
         truncation = True
     )
 
-    input_ids = encoded.input_ids.to(device)
-    attn_mask = encoded.attention_mask.to(device)
-    return input_ids, attn_mask
+    # Return input ids and attention mask
+    return encoded.input_ids.to(device), encoded.attention_mask.to(device)
 
 def get_tokenizer(name):
     tokenizer = T5Tokenizer.from_pretrained(name, model_max_length=MAX_LENGTH)
