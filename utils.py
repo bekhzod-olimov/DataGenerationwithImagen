@@ -233,39 +233,45 @@ def get_tokenizer(name):
     
     return T5Tokenizer.from_pretrained(name, model_max_length = MAX_LENGTH)
 
-def t5_encode_tokenized_text(
-    token_ids, device, text_embed_dim,
-    attn_mask = None,
-    pad_id = None,
-    name = DEFAULT_T5_NAME
-):
+def t5_encode_tokenized_text(token_ids, device, text_embed_dim, attn_mask = None, pad_id = None, name = DEFAULT_T5_NAME):
+    
     assert exists(attn_mask) or exists(pad_id)
+    
+    # Get a model
     t5, _ = get_model_and_tokenizer(name)
+    
+    # Change the model final layer 
     t5.encoder.final_layer_norm = torch.nn.Sequential(T5LayerNorm(768), torch.nn.Linear(768, text_embed_dim))
+    
+    # Switch to gpu
     t5 = t5.to(device)
+    
+    # Get attention mask
     attn_mask = default(attn_mask, lambda: (token_ids != pad_id).long())
 
+    # Switch to evaluation mode
     t5.eval()
 
+    # Get encoded text
     with torch.no_grad():
         output = t5(input_ids = token_ids, attention_mask = attn_mask)
         encoded_text = output.last_hidden_state.detach()
 
+    # Get attention mask
     attn_mask = attn_mask.bool()
 
+    # Get encoded text
     encoded_text = encoded_text.masked_fill(~rearrange(attn_mask, '... -> ... 1'), 0.) # just force all embeddings that is padding to be equal to 0.
     
     return encoded_text
 
 
-def t5_encode_text(
-    texts: List[str], 
-    text_embed_dim = 8,
-    name = DEFAULT_T5_NAME,
-    return_attn_mask = False,
-    device = "cuda:0"
-):
+def t5_encode_text(texts: List[str], text_embed_dim = 8, name = DEFAULT_T5_NAME, return_attn_mask = False, device = "cuda:0"):
+    
+    # Get token ids and attention mask
     token_ids, attn_mask = t5_tokenize(texts, name = name)
+    
+    # Get encoded text
     encoded_text = t5_encode_tokenized_text(token_ids, attn_mask = attn_mask, name = name, device = device, text_embed_dim = text_embed_dim)
 
     if return_attn_mask:
@@ -273,4 +279,3 @@ def t5_encode_text(
         return encoded_text, attn_mask
 
     return encoded_text.to(device)
-
