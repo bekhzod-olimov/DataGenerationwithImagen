@@ -145,11 +145,26 @@ def insert_zeros(x, all_j):
     return torch.cat(pieces[:-1], dim = 0)
 
 def default(val, d):
-    if exists(val):
-        return val
+    if exists(val): return val
     return d() if callable(d) else d
 
 def get_model_and_tokenizer(name):
+    
+    """
+    
+    This function gets name parameter and returns a model and a tokenizer.
+    
+    Parameter:
+    
+        name      - name of the model and tokenizer, str;
+        
+    Output:
+    
+        model     - a model to be trained;
+        tokenizer - tokenizer to tokenize inputs.
+    
+    """
+    
     global T5_CONFIGS
 
     if name not in T5_CONFIGS:
