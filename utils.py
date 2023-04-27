@@ -109,7 +109,7 @@ class SquarePad:
       hp_rem = (max_wh - w)%2
       vp = int((max_wh - h)/2)
       vp_rem = (max_wh - h)%2
-      padding = (hp, vp, hp+hp_rem, vp+vp_rem)
+      padding = (hp, vp, hp + hp_rem, vp + vp_rem)
       
       # Apply padding and return the padded image
       return FF.pad(image, padding, 255, 'constant')
@@ -152,7 +152,7 @@ def get_model_and_tokenizer(name):
     
     """
     
-    This function gets name parameter and returns a model and a tokenizer.
+    This function gets a name parameter and returns a model and a tokenizer.
     
     Parameter:
     
@@ -167,18 +167,29 @@ def get_model_and_tokenizer(name):
     
     global T5_CONFIGS
 
-    if name not in T5_CONFIGS:
-        T5_CONFIGS[name] = dict()
-    if "model" not in T5_CONFIGS[name]:
-        T5_CONFIGS[name]["model"] = get_model(name)
-    if "tokenizer" not in T5_CONFIGS[name]:
-        T5_CONFIGS[name]["tokenizer"] = get_tokenizer(name)
+    if name not in T5_CONFIGS: T5_CONFIGS[name] = dict()
+    if "model" not in T5_CONFIGS[name]: T5_CONFIGS[name]["model"] = get_model(name)
+    if "tokenizer" not in T5_CONFIGS[name]: T5_CONFIGS[name]["tokenizer"] = get_tokenizer(name)
 
     return T5_CONFIGS[name]['model'], T5_CONFIGS[name]['tokenizer']
 
 def get_model(name):
-    model = T5EncoderModel.from_pretrained(name)
-    return model
+    
+    """
+    
+    This function gets a name parameter and returns a model.
+    
+    Parameter:
+    
+        name      - name of the model and tokenizer, str;
+        
+    Output:
+    
+        model     - a model to be trained;
+    
+    """
+    
+    return T5EncoderModel.from_pretrained(name)
 
 
 def t5_tokenize(
