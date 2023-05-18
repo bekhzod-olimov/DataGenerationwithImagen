@@ -100,8 +100,10 @@ class CustomDataset(Dataset):
                     self.lps.append(encoded_text.flatten(0,1))
                     self.ims.append(f"{df['filename'][i]}")
         
+    # Get length of the dataset
     def __len__(self): return len(self.ims)
 
-    def __getitem__(self, index): return self.transform(Image.open(self.ims[index])), self.lps[index]
+    # Return tranformed image and its corresponding text embedding
+    def __getitem__(self, idx): return self.transform(Image.open(self.ims[idx])), self.lps[idx]
 
 # ds = CustomDataset(dataset = "ocr", t5_encode_text = t5_encode_text, text_embed_dim = 120, image_size = 128)
