@@ -29,18 +29,25 @@ class CustomDataset(Dataset):
         
         if dataset == "lp":
         
+            # Read csv data
             df = pd.read_csv(f"/home/ubuntu/workspace/bekhzod/imagen/lp_recognition_cropped/train/labels.csv")
+            
+            # Set maximum length of text data
             max_length = 8
 
-            for i, name in enumerate(tqdm(df['filename'])):
+            # Go through text data
+            for i, name in enumerate(tqdm(df["filename"])):
 
-                # if i == 50: break
+                # Get filename and extension
                 splitted = os.path.splitext(name)
-                plate_num = splitted[0]
-                im_file = splitted[1]
+                plate_num, im_file = splitted[0], splitted[1]
+                
+                # Assertion
                 assert im_file in im_files, f"Unsupported file type -> {name}"
 
+                # Break the loop if the first two characters are alphabet letters
                 if name[0].isalpha() and name[1].isalpha(): break
+                # Continue when special characters are in the text
                 if "-" in name or " " in name: continue
 
                 encoded_text = t5_encode_text(plate_num, text_embed_dim = text_embed_dim)
