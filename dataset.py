@@ -1,18 +1,30 @@
+# Import libraries
 import torch, os, numpy as np, pandas as pd
 from PIL import Image
 from torch.utils.data import Dataset
 from tqdm import tqdm
 from torchvision import transforms as T
-from utils import exists, SquarePad, insert_zeros
-
-from utils import t5_encode_text
+from utils import exists, SquarePad, insert_zeros, t5_encode_text
 
 class CustomDataset(Dataset):
+    
+    """
+    
+    This class gets several parameters and returns dataset to generate images.
+    
+    Parameters:
+    
+        dataset          - dataset name, str;
+        t5_encode_text   - a model to encode text, torch model object;
+        text_embed_dim   - number of dimensions of the text to be embedded, int;
+        image_size       - size of image in the dataset, int;
+        im_files         - valid image file extensions, list -> str.
+    
+    """
     
     def __init__(self, dataset, t5_encode_text, text_embed_dim, image_size, im_files = ['.jpg', '.jpeg', '.png', '.tiff']):
         super().__init__()
         
-        self.image_size = image_size
         self.lps, self.ims = [], []
         
         if dataset == "lp":
