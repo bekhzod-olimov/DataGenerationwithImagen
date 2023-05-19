@@ -1,10 +1,22 @@
-from imagen_pytorch import Unet, Imagen
+# Import libraries
 import torch, numpy as np
+from imagen_pytorch import Unet, Imagen
 
-torch.manual_seed(2023)
-np.random.seed(2023)
+# Set seed to ensure reproducibility
+torch.manual_seed(2023); np.random.seed(2023)
     
 def get_imagen(text_embed_dim, im_size):
+    
+    """
+    
+    This function gets several parameters and returns a model to be trained.
+    
+    Parameters:
+    
+        text_embed_dim     - dimension for text embedding, int;
+        im_size            - input image size, int. 
+    
+    """
     
     unet = Unet(
         dim = 128,
@@ -14,7 +26,7 @@ def get_imagen(text_embed_dim, im_size):
         layer_cross_attns = False
     )
 
-    # imagen, which contains the unet above
+    # Imagen model, which contains the UNet above
 
     imagen = Imagen(
         condition_on_text = True,  
@@ -25,4 +37,3 @@ def get_imagen(text_embed_dim, im_size):
     )
     
     return imagen
-
