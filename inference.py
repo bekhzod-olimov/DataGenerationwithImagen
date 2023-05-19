@@ -39,8 +39,8 @@ if __name__ == "__main__":
     parser.add_argument("-te", "--text_embed_dim", type = int, default = 120, help = "Text embedding size")
     parser.add_argument("-is", "--im_size", type = int, default = 128, help = "Input and output image size")
     parser.add_argument("-d", "--device", type = str, default = "cuda:0", help = "GPU device number")
-    parser.add_argument("-sm", "--saved_model_path", type = str, default = "saved_models/ocr_checkpoint_1200000.pt", help = "Path to the directory with the trained/saved model")
-    parser.add_argument("-sr", "--save_results_path", type = str, default = "inference_generated_samples", help = "Path to the directory to save the inference results")
+    parser.add_argument("-sm", "--saved_model_path", type = str, default = "path/to/model", help = "Path to the directory with the trained/saved model")
+    parser.add_argument("-sr", "--save_results_path", type = str, default = "path/to/dir", help = "Path to the directory to save the inference results")
     
     # Parse the arguments
     args = parser.parse_args() 
