@@ -14,7 +14,7 @@ def run(args):
     
     Parameter:
     
-        args - parsed arguments.
+        args - parsed arguments, argparse object.
         
     """
     
@@ -40,8 +40,16 @@ def run(args):
         trainer.load(args.pretrained)
         print(f"Pretrained model from {args.pretrained} is successfully loaded!")
     
-    # Start training
-    train(trainer, t5_encode_text, args.batch_size, args.iterations, device = args.device, result_save_path = args.save_results_path, model_save_path = args.save_model_path, eval_freq = args.eval_freq, generate_freq = args.generate_freq, save_freq = args.save_freq, text_embed_dim = args.text_embed_dim, save_name = args.data, text = text)
+    # Start training with the pre-defined arguments
+    train(trainer, t5_encode_text, args.batch_size, 
+          args.iterations, device = args.device,
+          result_save_path = args.save_results_path, 
+          model_save_path = args.save_model_path,
+          eval_freq = args.eval_freq,
+          generate_freq = args.generate_freq, 
+          save_freq = args.save_freq, 
+          text_embed_dim = args.text_embed_dim, 
+          save_name = args.data, text = text)
     
 if __name__ == "__main__":
     
@@ -52,7 +60,7 @@ if __name__ == "__main__":
     parser.add_argument("-dt", "--data", type = str, default = "ocr", help = "Path to the data")
     parser.add_argument("-bs", "--batch_size", type = int, default = 8, help = "Mini-batch size")
     parser.add_argument("-te", "--text_embed_dim", type = int, default = 120, help = "Text embedding size")
-    parser.add_argument("-pt", "--pretrained", type = str, default = "/home/ubuntu/workspace/bekhzod/imagen/saved_models/ocr_1000000.pt", help = "Fine tuning using a pretrained model")
+    parser.add_argument("-pt", "--pretrained", type = str, default = "path/to/checkpoint", help = "Fine tuning using a pretrained model") # /home/ubuntu/workspace/bekhzod/imagen/saved_models/ocr_1000000.pt
     parser.add_argument("-is", "--im_size", type = int, default = 128, help = "Input and output image size")
     parser.add_argument("-i", "--iterations", type = int, default = 120010, help = "Train iterations number")
     parser.add_argument("-d", "--device", type = str, default = 'cuda:0', help = "GPU device number")
