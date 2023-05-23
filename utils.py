@@ -1,6 +1,5 @@
 # Import libraries
-import torch, numpy as np, PIL.Image as Image
-import torchvision.transforms.functional as F
+import torch, numpy as np, PIL.Image as Image, torchvision.transforms.functional as F
 from typing import List
 from transformers import T5Tokenizer, T5EncoderModel, T5Config
 from einops import rearrange
@@ -20,7 +19,7 @@ def save_ims(gen_ims, save_path):
     Parameters:
     
         gen_ims    - generated images, list -> tensor;
-        save_path  - a path to directory to save images.
+        save_path  - a path to directory to save images, str.
         
     """
     
@@ -88,11 +87,11 @@ class SquarePad:
   
   Parameter:
   
-       image - an input image, array;
+       image - an input image, array.
        
   Output:
   
-       image - a square padded output image, array;
+       image - a square padded output image, array.
   
   """
 
@@ -160,8 +159,8 @@ def get_model_and_tokenizer(name):
         
     Output:
     
-        model     - a model to be trained;
-        tokenizer - tokenizer to tokenize inputs.
+        model     - a model to be trained, model object;
+        tokenizer - tokenizer to tokenize inputs, model object.
     
     """
     
@@ -185,7 +184,7 @@ def get_model(name):
         
     Output:
     
-        model     - a model to be trained;
+        model     - a model to be trained, model object.
     
     """
     
@@ -227,7 +226,7 @@ def get_tokenizer(name):
         
     Output:
     
-        tokenizer  - a tokenizer to tokenize inputs;
+        tokenizer  - a tokenizer to tokenize inputs, model object;
     
     """
     
