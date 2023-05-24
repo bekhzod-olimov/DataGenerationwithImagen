@@ -220,7 +220,7 @@ def t5_tokenize(texts: List[str], name = DEFAULT_T5_NAME):
     encoded = tokenizer.batch_encode_plus(
         texts,
         return_tensors = "pt",
-        padding = 'longest',
+        padding = "longest",
         max_length = MAX_LENGTH,
         truncation = True
     )
@@ -248,6 +248,25 @@ def get_tokenizer(name):
 
 def t5_encode_tokenized_text(token_ids, device, text_embed_dim, attn_mask = None, pad_id = None, name = DEFAULT_T5_NAME):
     
+    """
+    
+    This function gets several parameters and returns encoded text.
+    
+    Parameters:
+    
+        token_ids          - token indices from the tokenizer, tensor;
+        device             - gpu device name, str;
+        text_embed_dim     - embedding dimension of text to be encoded, int;
+        attn_mask          - attention mask from the tokenizer, tensor;
+        pad_id             - padding indices;
+        name               - name of the tokenizer, str.
+    
+    Output:
+    
+        encoded_text       - tokenized text, tensor.
+        
+    """
+    
     assert exists(attn_mask) or exists(pad_id)
     
     # Get a model
@@ -273,11 +292,10 @@ def t5_encode_tokenized_text(token_ids, device, text_embed_dim, attn_mask = None
     # Get attention mask
     attn_mask = attn_mask.bool()
 
-    # Get encoded text
-    encoded_text = encoded_text.masked_fill(~rearrange(attn_mask, '... -> ... 1'), 0.) # just force all embeddings that is padding to be equal to 0.
+    # Get encoded text: just force all embeddings that is padding to be equal to 0.
+    encoded_text = encoded_text.masked_fill(~rearrange(attn_mask, "... -> ... 1"), 0.) 
     
     return encoded_text
-
 
 def t5_encode_text(texts: List[str], text_embed_dim = 8, name = DEFAULT_T5_NAME, return_attn_mask = False, device = "cuda:0"):
     
