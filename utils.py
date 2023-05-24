@@ -103,15 +103,13 @@ class SquarePad:
       # Get max values of the width and height
       max_wh = np.max([w, h])
       
-      # Create padding
-      hp = int((max_wh - w)/2)
-      hp_rem = (max_wh - w)%2
-      vp = int((max_wh - h)/2)
-      vp_rem = (max_wh - h)%2
+      # Create padding values
+      hp, hp_rem = int((max_wh - w) / 2), (max_wh - w) % 2
+      vp, vp_rem = int((max_wh - h) / 2), (max_wh - h) % 2
       padding = (hp, vp, hp + hp_rem, vp + vp_rem)
       
       # Apply padding and return the padded image
-      return FF.pad(image, padding, 255, 'constant')
+      return FF.pad(image, padding, 255, "constant")
 
 def insert_zeros(x, all_j):
     
@@ -192,6 +190,22 @@ def get_model(name):
 
 
 def t5_tokenize(texts: List[str], name = DEFAULT_T5_NAME):
+    
+    """
+    
+    This function gets texts and returns tokens using the tokenizer initialized using a pre-defined tokenizer name.
+    
+    Parameters:
+    
+        texts             - texts to be tokenized, list -> str;
+        name              - a name of the tokenizer, str.
+        
+    Output:
+    
+        input_ids         - indices of the input text, tensor;
+        attention_masks   - attention masks of the input text, tensor. 
+    
+    """
     
     # Get model and tokenizer
     t5, tokenizer = get_model_and_tokenizer(name)
