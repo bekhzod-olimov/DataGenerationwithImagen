@@ -2,9 +2,16 @@
 
 This repository contains simple data generation examples using [Imagen](https://github.com/lucidrains/imagen-pytorch) model. The experiments are conducted to generate real-life license plate and outdoor banners.
 
-### Training 
+### Train Imagen
+Train Imagen model using a specific dataset and save the trained model for later use during inference.
 ```python
 python main.py --data = "lp" --pretrained = "path/to/checkpoint" --batch_size = 16 --im_size = 224
+```
+
+### Inference with Imagen
+Generate images using the trained model by running the following script.
+```python
+python inference.py
 ```
 
 **Real-life license plate generation**
