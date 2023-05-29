@@ -289,14 +289,34 @@ def t5_encode_tokenized_text(token_ids, device, text_embed_dim, attn_mask = None
 
 def t5_encode_text(texts: List[str], text_embed_dim = 8, name = DEFAULT_T5_NAME, return_attn_mask = False, device = "cuda:0"):
     
+    """
+    
+    This function gets several parameters and returns encoded text using encoder.
+    
+    Parameters:
+    
+        texts             - texts to be encoded, list -> str;
+        text_embed_dim    - embedding dimension of the texts to be encoded, int;
+        name              - name of the encoder, str;
+        return_attn_mask  - whether or not to return attention masks, bool;
+        device            - GPU device name, str
+    
+    Output:
+    
+        encoded_text     - encoded text, tensor.
+    
+    """
+    
     # Get token ids and attention mask
     token_ids, attn_mask = t5_tokenize(texts, name = name)
     
     # Get encoded text
     encoded_text = t5_encode_tokenized_text(token_ids, attn_mask = attn_mask, name = name, device = device, text_embed_dim = text_embed_dim)
 
+    # If return_attn_mask is on
     if return_attn_mask:
         attn_mask = attn_mask.bool()
+        
         return encoded_text, attn_mask
 
     return encoded_text.to(device)
