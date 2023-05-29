@@ -210,20 +210,14 @@ def t5_tokenize(texts: List[str], name = DEFAULT_T5_NAME):
     # Get model and tokenizer
     t5, tokenizer = get_model_and_tokenizer(name)
 
-    # Switch to gpu
+    # Switch to GPU
     if torch.cuda.is_available(): t5 = t5.cuda()
     
-    # Get gpu name
+    # Get GPU name
     device = next(t5.parameters()).device
 
     # Get encoded inputs
-    encoded = tokenizer.batch_encode_plus(
-        texts,
-        return_tensors = "pt",
-        padding = "longest",
-        max_length = MAX_LENGTH,
-        truncation = True
-    )
+    encoded = tokenizer.batch_encode_plus(texts, return_tensors = "pt", padding = "longest", max_length = MAX_LENGTH, truncation = True)
 
     # Return input ids and attention mask
     return encoded.input_ids.to(device), encoded.attention_mask.to(device)
@@ -285,17 +279,13 @@ def t5_encode_tokenized_text(token_ids, device, text_embed_dim, attn_mask = None
     t5.eval()
 
     # Get encoded text
-    with torch.no_grad():
-        output = t5(input_ids = token_ids, attention_mask = attn_mask)
-        encoded_text = output.last_hidden_state.detach()
+    with torch.no_grad(): output = t5(input_ids = token_ids, attention_mask = attn_mask); encoded_text = output.last_hidden_state.detach()
 
     # Get attention mask
     attn_mask = attn_mask.bool()
 
     # Get encoded text: just force all embeddings that is padding to be equal to 0.
-    encoded_text = encoded_text.masked_fill(~rearrange(attn_mask, "... -> ... 1"), 0.) 
-    
-    return encoded_text
+    return encoded_text.masked_fill(~rearrange(attn_mask, "... -> ... 1"), 0.) 
 
 def t5_encode_text(texts: List[str], text_embed_dim = 8, name = DEFAULT_T5_NAME, return_attn_mask = False, device = "cuda:0"):
     
